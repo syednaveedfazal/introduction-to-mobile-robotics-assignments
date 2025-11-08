@@ -1,0 +1,4 @@
+Info:first_name,last_name,student_id,student-email
+Uploader: John, Doe, SampleId, jd@uni-bonn.de
+2nd Member: Erika, Musterman, MusterID2, em@uni-bonn.de
+3rd Member: Max, Musterman, MusterId, mm@uni-bonn.de
