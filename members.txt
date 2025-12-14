@@ -1,4 +1,4 @@
 Info:first_name,last_name,student_id,student-email
-Uploader: John, Doe, SampleId, jd@uni-bonn.de
-2nd Member: Erika, Musterman, MusterID2, em@uni-bonn.de
-3rd Member: Max, Musterman, MusterId, mm@uni-bonn.de
+Uploader: Syed Naveed, Fazal, 50383078, s93nsyed@uni-bonn.de
+2nd Member: Aadil Aarif, Khan, 50379246, s07akhan@uni-bonn.de
+3rd Member: Hafiz Chaudhry Rafay, Aamir, 50428201, s68haami@uni-bonn.de

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 import pickle
 
@@ -220,59 +219,13 @@ def get_timesteps_system(
 
         new_sensor_timesteps = np.full_like(odom_timesteps, FLAG_TIME_MISSMATCH)
 
-        for i, t_odom in enumerate(odom_timesteps):
-            # Find candidate sensor readings:
-            # 1. Must be <= t_odom
-            # 2. Must be >= t_odom - tolerance_steps
-            
-            # Create a mask for potential candidates in the original sensor_timesteps array
-            # Note: sensor_timesteps might contain FLAG_SENSOR_FAILURE (-1), so we check > 0 for time logic
-            # but we also need to carry over failures if they fall in the window?
-            # Actually, usually if the "best" candidate is a failure, we report failure.
-            # If no candidate exists, we report mismatch.
-            
-            # Let's filter original valid times first to find indices
-            
-            best_val = FLAG_TIME_MISSMATCH
-            
+        # Iterate through odom_timesteps and for each one find the most recent sensor_timestep from sensor_timesteps
+        # that is within the tolerance window of the odometry timestep
+        for i, t_odom in enumerate(odom_timesteps):     
+            best_val = FLAG_TIME_MISSMATCH     
             # Iterate backwards through sensor_timesteps to find the first one in range
-            # Since sensor_timesteps is sorted (mostly), we can search efficiently or just linear scan
-            
+            # This is more efficient than iterating forwards since we are looking for the most recent one
             for s_t in reversed(sensor_timesteps):
-                # s_t is the value in sensor_timesteps (could be -1)
-                
-                # We need the original time to check condition, but we overwrote it with -1?
-                # Ah, typically get_timesteps returns a list of times. if we overwrite with -1, we lost the time info.
-                # However, the array is strictly increasing. If we encounter -1, we don't know its original time...
-                # WAIT. if we overwrite with -1, we break the "time" property.
-                # The logic requires us to know if a sensor *should* have been there.
-                
-                # Let's re-read carefully: "Assign FLAG_SENSOR_FAILURE to the timestep"
-                # If we do that, we lose the 'time' value.
-                # But the loop below says "find most recent sensor_timestep... within tolerance".
-                # If the array has -1s, we can't check 't <= t_odom'.
-                
-                # Assumption: We should check against the *original* intended time? 
-                # OR, maybe we assume the sensor_timesteps array is aligned with some index?
-                # No, they are just lists of integers.
-                
-                # STRATEGY CHANGE:
-                # We essentially need to match two time series.
-                # The 'sensor_timesteps' array holds the VALUES of the timesteps.
-                # If we overwrite a value with -1, we validly simulate a "failed reading" but we destroy the time info.
-                # BUT, since we iterate backwards, maybe we rely on the fact that if it's -1, it WAS a valid time roughly there.
-                # However, we can't check tolerance on -1.
-                
-                # Better approach:
-                # The task 1 says "Assign FLAG_SENSOR_FAILURE".
-                # This implies -1 IS the value effectively.
-                # The matching logic probably needs to work with a pristine copy OR 
-                # we only assume "valid" (non -1) timestamps can be matched.
-                # "Sensor Failure: Simulate missing measurements... Frequency Matching: Select sensor timesteps that are within tolerance"
-                
-                # Interpretation: If a sensor reading failed (-1), it CANNOT be selected. 
-                # Use only valid timestamps (!= -1) for matching.
-                
                 if s_t == FLAG_SENSOR_FAILURE:
                     continue 
                 
