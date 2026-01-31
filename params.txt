@@ -1,0 +1,23 @@
+{
+    "num_particles": 50,
+    "robot_init_pos": [
+        7.010102787985495,
+        -6.308394314068766,
+        -1.7384734346986157
+    ],
+    "num_landmarks": 19,
+    "motion_noise": [
+        0.0005,
+        0.001,
+        0.0005
+    ],
+    "landmark_failure": 0,
+    "seed": 0,
+    "sensor_noise": [
+        0.001,
+        0.0005
+    ],
+    "noise_landmarkdata": 1,
+    "noise_odomdata": 0.01,
+    "num_iterations_resample": "selective"
+}
